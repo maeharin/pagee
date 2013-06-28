@@ -152,6 +152,7 @@ class Pagee
     public function append_params($params)
     {
         $this->params = $params;
+        return $this;
     }
 
     /**

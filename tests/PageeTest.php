@@ -9,13 +9,12 @@ class PageeTest extends PHPUnit_Framework_TestCase
         $this->pagee = Pagee::create(array(
             'base_url'       => 'http://www.hoge.com/answers.php',
             'total_count'    => 100,
-            'requested_page' => 3
+            'requested_page' => '3'
         ));
     }
 
     public function tearDown()
     {
-        unset($_GET['page']);
     }
 
     public function testLimitOffset()
@@ -48,7 +47,7 @@ class PageeTest extends PHPUnit_Framework_TestCase
         $pagee = Pagee::create(array(
             'per_page'       => 10, //default is 20
             'total_count'    => 100,
-            'requested_page' => 3
+            'requested_page' => '3'
         ));
 
         $this->assertEquals(10, $pagee->limit());
@@ -59,13 +58,19 @@ class PageeTest extends PHPUnit_Framework_TestCase
     {
         $pagee = Pagee::create(array(
             'total_count'    => 100,
-            'requested_page' => -10
+            'requested_page' => '-10'
         ));
         $this->assertEquals(1, $pagee->current());
 
         $pagee = Pagee::create(array(
             'total_count'    => 100,
             'requested_page' => 'hoge'
+        ));
+        $this->assertEquals(1, $pagee->current());
+
+        $pagee = Pagee::create(array(
+            'total_count'    => 100,
+            'requested_page' => '0'
         ));
         $this->assertEquals(1, $pagee->current());
     }

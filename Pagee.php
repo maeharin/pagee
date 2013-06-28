@@ -50,7 +50,7 @@ class Pagee
 		if (is_numeric($requested_page) && $requested_page > $this->last_page){
 			$this->current_page = ($this->last_page > 0) ? $this->last_page : 1;
 		} else {
-		    $this->current_page = $this->is_valid_requested_page($requested_page) ? $requested_page : 1;
+		    $this->current_page = $this->is_valid_requested_page($requested_page) ? (int)$requested_page : 1;
         }
     }
 

@@ -10,28 +10,27 @@ class Pagee
     protected $records;
     protected $params;
 
-    public function __construct($setting)
+    public static function create($setting)
+    {
+        return new static($setting);
+    }
+
+    protected function __construct($setting)
     {
         $setting = array_merge($this->default_setting(), $setting);
 
         extract($setting);
 
-        // base url
         $this->base_url = $base_url;
-
-        // total coutn of records
         $this->total_count = $total_count;
-
-        // per_page
         $this->per_page = $per_page;
-
-        // last_page
         $this->last_page = (int)ceil($this->total_count / $this->per_page);
-
-        // current_page
         $this->set_current_page($requested_page);
     }
 
+    /**
+     * default setting
+     */
     protected function default_setting()
     {
         return array(
@@ -41,18 +40,23 @@ class Pagee
         );
     }
 
+    /**
+     * set current page
+     * - if requested_page is greater than last_page, current_page is set to last_page
+     * - if requrested_page is invalid, current_page is set to 1
+     */
     protected function set_current_page($requested_page)
     {
-        // if requested_page is greater than last_page, 
-        // current_page is last_page
 		if (is_numeric($requested_page) && $requested_page > $this->last_page){
 			$this->current_page = ($this->last_page > 0) ? $this->last_page : 1;
 		} else {
-            // if requrested_page is invalid, set 1
 		    $this->current_page = $this->is_valid_requested_page($requested_page) ? $requested_page : 1;
         }
     }
 
+    /**
+     * is requested_page valid?
+     */
     protected function is_valid_requested_page($requested_page)
     {
         if ($requested_page >= 1 && filter_var($requested_page, FILTER_VALIDATE_INT) !== false) {
@@ -79,7 +83,7 @@ class Pagee
     }
 
     /**
-     * set filtered_records
+     * set results of sql
      */ 
     public function set_records($records)
     {
@@ -87,7 +91,7 @@ class Pagee
     }
 
     /**
-     *
+     * return records
      */
     public function records()
     {
@@ -95,7 +99,7 @@ class Pagee
     }
 
     /**
-     * 
+     * current page number
      */
     public function current()
     {
@@ -103,7 +107,7 @@ class Pagee
     }
 
     /**
-     *
+     * last page number
      */
     public function last()
     {
@@ -111,7 +115,7 @@ class Pagee
     }
 
     /**
-     *
+     * prev page number
      */
     public function prev()
     {
@@ -119,7 +123,7 @@ class Pagee
     }
 
     /**
-     *
+     * next page number
      */
     public function next()
     {
@@ -129,7 +133,7 @@ class Pagee
     /**
      * current_page is first_page?
      */
-    public function is_first()
+    protected function is_first()
     {
         return $this->current_page === 1 ? true : false;
     }
@@ -137,7 +141,7 @@ class Pagee
     /**
      * current_page is last_page?
      */
-    public function is_last()
+    protected function is_last()
     {
         return $this->current_page === $this->last_page ? true : false;
     }
@@ -150,7 +154,10 @@ class Pagee
         $this->params = $params;
     }
 
-    public function html_link($page, $content)
+    /**
+     * generate html link
+     */
+    protected function html_link($page, $content)
     {
         $html = '<a href="';
         $html .= $this->base_url;
@@ -168,7 +175,7 @@ class Pagee
     }
 
     /**
-     *
+     * prev link html
      */
     public function prev_link()
     {
@@ -184,7 +191,7 @@ class Pagee
     }
 
     /**
-     *
+     * first link html
      */
     public function first_link()
     {
@@ -200,7 +207,7 @@ class Pagee
     }
 
     /**
-     *
+     * around link html
      */
     public function around_link()
     {
@@ -216,7 +223,7 @@ class Pagee
     }
 
     /**
-     *
+     * last link html
      */
     public function last_link()
     {
@@ -232,7 +239,7 @@ class Pagee
     }
 
     /**
-     *
+     * next link html
      */
     public function next_link()
     {
@@ -265,8 +272,8 @@ class Pagee
         $html .= $this->last_link() . PHP_EOL;
         $html .= $this->next_link() . PHP_EOL;
 
-		$html .= '</ul>' . PHP_EOL;
-		$html .= '</div>' . PHP_EOL;
+        $html .= '</ul>' . PHP_EOL;
+        $html .= '</div>' . PHP_EOL;
 
         return $html;
     }

@@ -6,7 +6,7 @@ class PageeTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->pagee = new Pagee(array(
+        $this->pagee = Pagee::create(array(
             'base_url'       => 'http://www.hoge.com/answers.php',
             'total_count'    => 100,
             'requested_page' => 3
@@ -45,7 +45,7 @@ class PageeTest extends PHPUnit_Framework_TestCase
 
     public function testCustomPerPage()
     {
-        $pagee = new Pagee(array(
+        $pagee = Pagee::create(array(
             'per_page'       => 10, //default is 20
             'total_count'    => 100,
             'requested_page' => 3
@@ -57,13 +57,13 @@ class PageeTest extends PHPUnit_Framework_TestCase
 
     public function testInvalidParams()
     {
-        $pagee = new Pagee(array(
+        $pagee = Pagee::create(array(
             'total_count'    => 100,
             'requested_page' => -10
         ));
         $this->assertEquals(1, $pagee->current());
 
-        $pagee = new Pagee(array(
+        $pagee = Pagee::create(array(
             'total_count'    => 100,
             'requested_page' => 'hoge'
         ));

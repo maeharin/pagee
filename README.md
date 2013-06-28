@@ -3,21 +3,22 @@ independent PHP pagination library
 
 ## what?
 - independent from any other library, works stand alone
-- distributed by composer
 - generate limit and offset for sql
 - generate links for pagination
 
 ## usage
+1. set
 ```php
-$pagee = new Pagee(array(
-    'base_url'       => 'http://www.hoge.com/answers.php',
+// requested url: http://www.hoge.com/users.php?page=3
+// total_count: the results of 'select count(*) from users;'
+$pagee = Pagee::create(array(
+    'base_url'       => 'http://www.hoge.com/users.php',
     'total_count'    => 100,
     'requested_page' => 3
 ));
-
-
 ```
 
+2. find this page's records
 ```php
 $sql = "
     SELECT
@@ -31,25 +32,45 @@ $sql = "
 ";
 ```
 
+3. generate pagination links
 ```php
 $pagee->links();
 ```
 
 ## customize setting
 ```php
-$pagee = new Pagee(array(
-    'base_url'       => 'http://www.hoge.com/answers.php',
-    'total_count'    => 100,
-    'requested_page' => 3
-));
+$pagee = Pagee::create(array(
+            'base_url'       => 'http://www.hoge.com/answers.php',
+            'total_count'    => 100,
+            'requested_page' => 3
+        ))
+        ->append_params(array(
+            'project_id' => 100,
+            'user_type' => 'hoge'
+        ));
 
-
-$this->pagee->append_params(array(
-    'project_id' => 100, 'user_type' => 'hoge'
-));
+$pagee->links();
 ```
 
+## install
+download composer
+```
+$ curl -s https://getcomposer.org/installer | php
+```
 
+composer.json
+```
+{
+    "require": {
+        "maeharin/pagee": "*"
+    }
+}
+```
+
+install
+```
+$ php composer.phar install
+```
 
 ## todo
 - i18n

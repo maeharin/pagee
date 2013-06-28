@@ -7,7 +7,7 @@ independent PHP pagination library
 - generate links for pagination
 
 ## usage
-1. set
+### 1. set
 ```php
 // requested url: http://www.hoge.com/users.php?page=3
 // total_count: the results of 'select count(*) from users;'
@@ -18,7 +18,7 @@ $pagee = Pagee::create(array(
 ));
 ```
 
-2. find this page's records
+### 2. find this page's records
 ```php
 $sql = "
     SELECT
@@ -32,7 +32,7 @@ $sql = "
 ";
 ```
 
-3. generate pagination links
+### 3. generate pagination links
 ```php
 $pagee->links();
 ```

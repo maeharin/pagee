@@ -62,7 +62,7 @@ composer.json
 ```
 {
     "require": {
-        "maeharin/pagee": "*"
+        "maeharin/pagee": "dev-master"
     }
 }
 ```

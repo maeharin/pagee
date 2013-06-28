@@ -26,11 +26,11 @@ class PageeTest extends PHPUnit_Framework_TestCase
 
     public function testLinks()
     {
-        $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=2">前へ</a></li>', $this->pagee->prev_link());
+        $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=2">prev</a></li>', $this->pagee->prev_link());
         $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=1">1</a></li>', $this->pagee->first_link());
         $this->assertEquals('<li class="active"><span>...</span><a href="#">3</a><span>...</span></li>', $this->pagee->around_link());
         $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=5">5</a></li>', $this->pagee->last_link());
-        $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=4">次へ</a></li>', $this->pagee->next_link());
+        $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=4">next</a></li>', $this->pagee->next_link());
     }
 
     public function testAppendParams()
@@ -39,7 +39,7 @@ class PageeTest extends PHPUnit_Framework_TestCase
             'project_id' => 100, 'user_type' => 'hoge'
         ));
 
-        $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=2&project_id=100&user_type=hoge">前へ</a></li>', $this->pagee->prev_link());
+        $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=2&project_id=100&user_type=hoge">prev</a></li>', $this->pagee->prev_link());
     }
 
 

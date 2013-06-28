@@ -183,7 +183,7 @@ class Pagee
             return '';
         } else {
             $html = '<li>';
-            $html .= $this->html_link($this->prev(), '前へ'); 
+            $html .= $this->html_link($this->prev(), 'prev'); 
             $html .= '</li>';
 
             return $html;
@@ -247,7 +247,7 @@ class Pagee
             return '';
         } else {
             $html = '<li>';
-            $html .= $this->html_link($this->next(), '次へ'); 
+            $html .= $this->html_link($this->next(), 'next'); 
             $html .= '</li>';
 
             return $html;

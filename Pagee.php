@@ -7,6 +7,7 @@ class Pagee
     protected $per_page;
     protected $last_page;
     protected $current_page;
+    protected $window;
     protected $records;
     protected $params;
 
@@ -26,6 +27,7 @@ class Pagee
         $this->per_page = intval($per_page);
         $this->last_page = (int)ceil($this->total_count / $this->per_page);
         $this->set_current_page($requested_page);
+        $this->window = $window;
     }
 
     /**
@@ -36,7 +38,8 @@ class Pagee
         return array(
             'base_url'       => '',
             'per_page'       => 20,
-            'requested_page' => 1
+            'requested_page' => 1,
+            'window'         => 3
         );
     }
 
@@ -131,6 +134,39 @@ class Pagee
     }
 
     /**
+     * before page numbers
+     */
+    public function befores()
+    {
+        $before_candidates = array();
+
+        for($i = 1; $i <= $this->window; $i++) {
+            $before_candidates[] = $this->current_page - $i;
+        }
+
+        return array_filter($before_candidates, function ($before) {
+            if($before > 1) { return $before; }
+        }); 
+    }
+
+    /**
+     * after page numbers
+     */
+    public function afters()
+    {
+        $after_candidates = array();
+
+        for($i = 1; $i <= $this->window; $i++) {
+            $after_candidates[] = $this->current_page + $i;
+        }
+
+        $that = $this;
+        return array_filter($after_candidates, function ($after) use ($that) {
+            if($after < $that->last()) { return $after; }
+        }); 
+    }
+
+    /**
      * current_page is first_page?
      */
     public function is_first()
@@ -144,6 +180,30 @@ class Pagee
     public function is_last()
     {
         return $this->current_page === $this->last_page ? true : false;
+    }
+
+    /**
+     * has before dot?
+     */
+    public function has_before_dot()
+    {
+        if($this->current_page >= (1 + $this->window + 2)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * has after dot?
+     */
+    public function has_after_dot()
+    {
+        if($this->current_page <= ($this->last() - $this->window - 2)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -208,17 +268,87 @@ class Pagee
     }
 
     /**
-     * around link html
+     * before dot
      */
-    public function around_link()
+    public function before_dot()
     {
-        $url = $this->base_url . "?page=" . $this->current_page;
+        if(! $this->has_before_dot()) {
+            return '';
+        }
 
+        $html = '<span>...</span>';
+
+        return $html;
+    }
+
+    /**
+     * before links
+     */
+    public function before_links()
+    {
+        $befores = $this->befores();
+        if(empty($befores)) {
+            return '';
+        }
+
+        sort($befores);
+
+        $before_links = array();
+        foreach($befores as $before) {
+            $html = '<li>';
+            $html .= $this->html_link($before, $before);
+            $html .= '</li>';
+
+            $before_links[] = $html;
+        }
+
+        return implode("\n", $before_links);
+    }
+
+    /**
+     * current element
+     */
+    public function current_element()
+    {
         $html = '<li class="active">';
-        $html .= '<span>...</span>';
-        $html .= '<a href="#">' . $this->current_page . '</a>';
-        $html .= '<span>...</span>';
+        $html .= $this->current_page;
         $html .= '</li>';
+
+        return $html;
+    }
+
+    /**
+     * after links
+     */
+    public function after_links()
+    {
+        $afters = $this->afters();
+        if(empty($afters)) {
+            return '';
+        }
+
+        $after_links = array();
+        foreach($afters as $after) {
+            $html = '<li>';
+            $html .= $this->html_link($after, $after);
+            $html .= '</li>';
+
+            $after_links[] = $html;
+        }
+
+        return implode("\n", $after_links);
+    }
+
+    /**
+     * after dot
+     */
+    public function after_dot()
+    {
+        if(! $this->has_after_dot()) {
+            return '';
+        }
+
+        $html = '<span>...</span>';
 
         return $html;
     }
@@ -269,7 +399,11 @@ class Pagee
 
         $html .= $this->prev_link() . PHP_EOL;
         $html .= $this->first_link() . PHP_EOL;
-        $html .= $this->around_link() . PHP_EOL;
+        $html .= $this->before_dot() . PHP_EOL;
+        $html .= $this->before_links() . PHP_EOL;
+        $html .= $this->current_element() . PHP_EOL;
+        $html .= $this->after_links() . PHP_EOL;
+        $html .= $this->after_dot() . PHP_EOL;
         $html .= $this->last_link() . PHP_EOL;
         $html .= $this->next_link() . PHP_EOL;
 

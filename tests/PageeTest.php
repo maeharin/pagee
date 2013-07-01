@@ -8,8 +8,8 @@ class PageeTest extends PHPUnit_Framework_TestCase
     {
         $this->pagee = Pagee::create(array(
             'base_url'       => 'http://www.hoge.com/answers.php',
-            'total_count'    => 100,
-            'requested_page' => '3'
+            'total_count'    => 1010,
+            'requested_page' => '6'
         ));
     }
 
@@ -20,16 +20,22 @@ class PageeTest extends PHPUnit_Framework_TestCase
     public function testLimitOffset()
     {
         $this->assertEquals(20, $this->pagee->limit());
-        $this->assertEquals(40, $this->pagee->offset());
+        $this->assertEquals(100, $this->pagee->offset());
+    }
+
+    public function testBaseValues()
+    {
+        $this->assertEquals(6, $this->pagee->current());
+        $this->assertEquals(51, $this->pagee->last());
     }
 
     public function testLinks()
     {
-        $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=2">prev</a></li>', $this->pagee->prev_link());
+        $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=5">prev</a></li>', $this->pagee->prev_link());
         $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=1">1</a></li>', $this->pagee->first_link());
-        $this->assertEquals('<li class="active"><span>...</span><a href="#">3</a><span>...</span></li>', $this->pagee->around_link());
-        $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=5">5</a></li>', $this->pagee->last_link());
-        $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=4">next</a></li>', $this->pagee->next_link());
+        $this->assertEquals('<li class="active">6</li>', $this->pagee->current_element());
+        $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=51">51</a></li>', $this->pagee->last_link());
+        $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=7">next</a></li>', $this->pagee->next_link());
     }
 
     public function testAppendParams()
@@ -38,7 +44,7 @@ class PageeTest extends PHPUnit_Framework_TestCase
             'project_id' => 100, 'user_type' => 'hoge'
         ));
 
-        $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=2&project_id=100&user_type=hoge">prev</a></li>', $this->pagee->prev_link());
+        $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=5&project_id=100&user_type=hoge">prev</a></li>', $this->pagee->prev_link());
     }
 
     public function testFirstPage()

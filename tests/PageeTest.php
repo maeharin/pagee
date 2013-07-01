@@ -41,6 +41,29 @@ class PageeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=2&project_id=100&user_type=hoge">prev</a></li>', $this->pagee->prev_link());
     }
 
+    public function testFirstPage()
+    {
+        $pagee = Pagee::create(array(
+            'total_count'    => 100,
+            'requested_page' => '1'
+        ));
+
+        $this->assertTrue($pagee->is_first());
+        $this->assertEquals('', $pagee->prev_link());
+        $this->assertEquals('', $pagee->first_link());
+    }
+
+    public function testLastPage()
+    {
+        $pagee = Pagee::create(array(
+            'total_count'    => 100,
+            'requested_page' => '5'
+        ));
+
+        $this->assertTrue($pagee->is_last());
+        $this->assertEquals('', $pagee->next_link());
+        $this->assertEquals('', $pagee->last_link());
+    }
 
     public function testCustomPerPage()
     {

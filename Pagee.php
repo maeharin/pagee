@@ -24,7 +24,7 @@ class Pagee
         $this->base_url = $base_url;
         $this->total_count = intval($total_count);
         $this->per_page = intval($per_page);
-        $this->last_page = ceil($this->total_count / $this->per_page);
+        $this->last_page = (int)ceil($this->total_count / $this->per_page);
         $this->set_current_page($requested_page);
     }
 
@@ -133,7 +133,7 @@ class Pagee
     /**
      * current_page is first_page?
      */
-    protected function is_first()
+    public function is_first()
     {
         return $this->current_page === 1 ? true : false;
     }
@@ -141,7 +141,7 @@ class Pagee
     /**
      * current_page is last_page?
      */
-    protected function is_last()
+    public function is_last()
     {
         return $this->current_page === $this->last_page ? true : false;
     }

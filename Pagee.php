@@ -22,9 +22,9 @@ class Pagee
         extract($setting);
 
         $this->base_url = $base_url;
-        $this->total_count = $total_count;
-        $this->per_page = $per_page;
-        $this->last_page = (int)ceil($this->total_count / $this->per_page);
+        $this->total_count = intval($total_count);
+        $this->per_page = intval($per_page);
+        $this->last_page = ceil($this->total_count / $this->per_page);
         $this->set_current_page($requested_page);
     }
 
@@ -50,7 +50,7 @@ class Pagee
 		if (is_numeric($requested_page) && $requested_page > $this->last_page){
 			$this->current_page = ($this->last_page > 0) ? $this->last_page : 1;
 		} else {
-		    $this->current_page = $this->is_valid_requested_page($requested_page) ? (int)$requested_page : 1;
+		    $this->current_page = $this->is_valid_requested_page($requested_page) ? intval($requested_page) : 1;
         }
     }
 

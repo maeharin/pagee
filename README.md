@@ -55,7 +55,7 @@ $pagee->links();
 ## install
 download composer
 ```
-$ curl -s https://getcomposer.org/installer | php
+curl -sS https://getcomposer.org/installer | php
 ```
 
 composer.json

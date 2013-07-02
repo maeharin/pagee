@@ -27,6 +27,7 @@ class PageeTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(6, $this->pagee->current());
         $this->assertEquals(51, $this->pagee->last());
+        $this->assertEquals(1010, $this->pagee->total_count());
     }
 
     public function testLinks()

@@ -102,6 +102,14 @@ class Pagee
     }
 
     /**
+     * total count
+     */
+    public function total_count()
+    {
+        return $this->total_count;
+    }
+
+    /**
      * current page number
      */
     public function current()

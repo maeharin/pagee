@@ -318,9 +318,9 @@ class Pagee
      */
     public function current_element()
     {
-        $html = '<li class="active">';
+        $html = '<li class="active"><span>';
         $html .= $this->current_page;
-        $html .= '</li>';
+        $html .= '</span></li>';
 
         return $html;
     }

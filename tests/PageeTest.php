@@ -34,7 +34,7 @@ class PageeTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=5">prev</a></li>', $this->pagee->prev_link());
         $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=1">1</a></li>', $this->pagee->first_link());
-        $this->assertEquals('<li class="active">6</li>', $this->pagee->current_element());
+        $this->assertEquals('<li class="active"><span>6</span></li>', $this->pagee->current_element());
         $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=51">51</a></li>', $this->pagee->last_link());
         $this->assertEquals('<li><a href="http://www.hoge.com/answers.php?page=7">next</a></li>', $this->pagee->next_link());
     }
